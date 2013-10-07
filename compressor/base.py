@@ -159,6 +159,7 @@ class Compressor(object):
                 'elem': elem,
                 'kind': kind,
                 'basename': basename,
+                'enabled': enabled,
             }
 
             if kind == SOURCE_FILE:
@@ -221,9 +222,13 @@ class Compressor(object):
                     raise FilterDoesNotExist('Could not find "%s".' %
                             filter_or_command)
                 else:
-                    return True, precompiler_class(content, attrs,
-                            filter_type=self.type, filename=filename).input(
-                                **kwargs)
+
+                    filter = precompiler_class(
+                        content, attrs, filter_type=self.type, filename=filename)
+                    if hasattr(filter, 'precompile'):
+                        return filter.precompile(**kwargs)
+                    return True, filter.input(**kwargs)
+
         return False, content
 
     def filter(self, content, method, **kwargs):
