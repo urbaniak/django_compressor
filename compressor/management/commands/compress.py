@@ -272,7 +272,7 @@ class Command(NoArgsCommand):
                     context['block'] = context.render_context[BLOCK_CONTEXT_KEY].get_block(node._block_name)
                     if context['block']:
                         context['block'].context = context
-                key = get_offline_hexdigest(node.nodelist.render(context))
+                key = get_offline_hexdigest(node.nodelist.render(Context({})))
                 try:
                     result = node.render(context, forced=True)
                 except Exception, e:
