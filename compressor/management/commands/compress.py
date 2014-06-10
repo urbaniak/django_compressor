@@ -275,6 +275,7 @@ class Command(NoArgsCommand):
                 key = get_offline_hexdigest(node.nodelist.render(Context({})))
                 try:
                     result = node.render(context, forced=True)
+                    result = result.replace(context.get('STATIC_URL'), '__STATIC_URL__')
                 except Exception, e:
                     raise CommandError("An error occured during rendering %s: "
                                        "%s" % (template.template_name, e))

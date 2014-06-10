@@ -87,6 +87,7 @@ class CompressorMixin(object):
         # See if it has been rendered offline
         cached_offline = self.render_offline(context, forced=forced)
         if cached_offline:
+            cached_offline = cached_offline.replace("__STATIC_URL__", context.get("STATIC_URL"))
             return cached_offline
 
         # Take a shortcut if we really don't have anything to do
